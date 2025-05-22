@@ -1,16 +1,14 @@
 import { Hono, type Context } from 'hono'
 import { cors } from 'hono/cors'
-import albums from './albums'
-import songs from './songs'
+import articleRouter from './routes/article'
+import speechRouter from './routes/speech'
+// import { convertToWav } from './lib/audio-utils'
 
 // Define a type for the binding that Hono will expect for environment variables
 type Bindings = {
-  VITE_TURSO_DATABASE_URL: string;
-  VITE_TURSO_AUTH_TOKEN: string;
+    GEMINI_API_KEY: string;
   // Add other environment bindings if you have them
 }
-
-
 
 const app = new Hono<{ Bindings: Bindings }>()
 
@@ -26,15 +24,15 @@ app.use('*', cors({
 
 // Root endpoint
 app.get('/', (c: Context<{ Bindings: Bindings }>) => c.json({
-  message: 'Ana Maria Admin API',
+  message: 'Gemini Article Reader API',
   version: '1.0.0',
-  endpoints: ['/albums', '/songs']
+  endpoints: ['/', '/speech/generate', '/article/extract']
 }))
 
-// Mount album and song routes
-app.route('/albums', albums)
-app.route('/songs', songs)
+// Add article routes
+app.route('/article', articleRouter)
 
-
+// Add speech routes
+app.route('/speech', speechRouter)
 
 export default app

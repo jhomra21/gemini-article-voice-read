@@ -1,3 +1,87 @@
+# Gemini Article Voice Reader
+
+A SolidJS application that leverages Google's Gemini API to convert text to speech with high-quality, natural-sounding voices.
+
+## Features
+
+- Convert any text to speech using Google's Gemini TTS models
+- Choose from 30 different voice options with various characteristics
+- Single-speaker audio generation
+- Automatic audio playback (can be toggled)
+- Debug mode for troubleshooting
+- Download generated audio files
+- Responsive design
+
+## Technologies
+
+- **Frontend**: SolidJS, TanStack Query, TanStack Router
+- **UI**: Tailwind CSS, ShadCN-Solid components
+- **Backend**: Cloudflare Workers with Hono.js
+- **API**: Google Gemini API (TTS models)
+- **Build Tool**: Bun
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 16+ or Bun
+- Gemini API key (obtainable from Google AI Studio)
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/gemini-article-voice-read.git
+cd gemini-article-voice-read
+```
+
+2. Install dependencies:
+```bash
+bun install
+```
+
+3. Set up environment variables:
+Create a `.dev.vars` file in the project root with your Gemini API key:
+```
+GEMINI_API_KEY=your_api_key_here
+```
+
+### Development
+
+Run the development server:
+```bash
+bun run dev
+```
+
+The app should be available at http://localhost:3000
+
+## Deployment
+
+Deploy to Cloudflare Pages:
+```bash
+bun run build
+```
+
+Ensure your Cloudflare Pages configuration includes the `GEMINI_API_KEY` environment variable.
+
+## API Documentation
+
+The API has the following endpoint:
+
+- `POST /generate-speech`: Convert text to speech
+  - Request Body:
+    ```json
+    {
+      "text": "Text to be converted to speech",
+      "voiceId": "Zephyr" // Optional, defaults to first voice
+    }
+    ```
+  - Response: Audio file (WAV format)
+
+## License
+
+MIT
+
 Welcome to your new TanStack app! 
 
 # Getting Started

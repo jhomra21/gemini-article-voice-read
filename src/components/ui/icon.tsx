@@ -1,6 +1,6 @@
 import { Show, Switch, Match, splitProps, type ComponentProps } from "solid-js";
 
-export type IconName = "panelLeft" | "panelLeftClose" | "house" | "dumbbell" | "history" | "x" | "database" | "music" | "musicNote";
+export type IconName = "panelLeft" | "panelLeftClose" | "house" | "dumbbell" | "history" | "x" | "database" | "music" | "musicNote" | "speaker";
 
 // Define props for the Icon component
 // We want to accept any standard SVG element attributes
@@ -71,6 +71,14 @@ const MusicNoteIcon = (props: ComponentProps<"svg">) => (
   </svg>
 );
 
+const SpeakerIcon = (props: ComponentProps<"svg">) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...props}>
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+  </svg>
+);
+
 export const Icon = (props: IconProps) => {
   const [local, others] = splitProps(props, ["name", "class", "width", "height"]);
   
@@ -106,6 +114,9 @@ export const Icon = (props: IconProps) => {
       </Match>
       <Match when={local.name === "musicNote"}>
         <MusicNoteIcon width={defaultWidth} height={defaultHeight} class={defaultClass} {...others} />
+      </Match>
+      <Match when={local.name === "speaker"}>
+        <SpeakerIcon width={defaultWidth} height={defaultHeight} class={defaultClass} {...others} />
       </Match>
     </Switch>
   );

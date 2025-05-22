@@ -11,11 +11,13 @@ import { render } from 'solid-js/web'
 import { Show, Suspense } from 'solid-js'
 import { Transition } from 'solid-transition-group'
 import { QueryClient, QueryClientProvider } from '@tanstack/solid-query'
-import DBTest from './routes/DBtest'
+import { ApiProvider } from './components/ApiProvider'
+import Index from './routes/index'
 // Import admin routes
-import AlbumsPage from './routes/admin/albums'
-import SongsPage from './routes/admin/songs'
-import { fetchAlbums, fetchSongs } from './lib/apiService'
+// import AlbumsPage from './routes/admin/albums'
+// import SongsPage from './routes/admin/songs'
+import TTSPage from './routes/tts'
+// import { fetchAlbums, fetchSongs } from './lib/apiService'
 
 import './styles.css'
 
@@ -114,7 +116,7 @@ const rootRoute = createRootRouteWithContext<RouterContext>()({
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
-  component: DBTest,
+  component: Index,
   errorComponent: () => (
     <div class="p-4 text-red-500">
       An error occurred while loading this component. 
@@ -124,52 +126,65 @@ const indexRoute = createRoute({
 })
 
 // Admin routes with loaders
-const adminAlbumsRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/albums',
-  component: AlbumsPage,
-  loader: async ({ context: { queryClient } }) => {
-    // Ensure album data is loaded before rendering the component
-    return queryClient.ensureQueryData({
-      queryKey: ['albums'],
-      queryFn: fetchAlbums,
-      staleTime: 5 * 60 * 1000, // 5 minutes
-    });
-  },
-  errorComponent: () => (
-    <div class="p-4 text-red-500">
-      An error occurred while loading the Albums page. 
-      Please check the console for more details.
-    </div>
-  )
-})
+// const adminAlbumsRoute = createRoute({
+//   getParentRoute: () => rootRoute,
+//   path: '/albums',
+//   component: AlbumsPage,
+//   loader: async ({ context: { queryClient } }) => {
+//     // Ensure album data is loaded before rendering the component
+//     return queryClient.ensureQueryData({
+//       queryKey: ['albums'],
+//       queryFn: fetchAlbums,
+//       staleTime: 5 * 60 * 1000, // 5 minutes
+//     });
+//   },
+//   errorComponent: () => (
+//     <div class="p-4 text-red-500">
+//       An error occurred while loading the Albums page. 
+//       Please check the console for more details.
+//     </div>
+//   )
+// })
 
-const adminSongsRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/songs',
-  component: SongsPage,
-  loader: async ({ context: { queryClient } }) => {
-    // Ensure song data is loaded before rendering the component
-    return queryClient.ensureQueryData({
-      queryKey: ['songs'],
-      queryFn: fetchSongs,
-      staleTime: 5 * 60 * 1000, // 5 minutes
-    });
-  },
-  errorComponent: () => (
-    <div class="p-4 text-red-500">
-      An error occurred while loading the Songs page. 
-      Please check the console for more details.
-    </div>
-  )
-})
+// const adminSongsRoute = createRoute({
+//   getParentRoute: () => rootRoute,
+//   path: '/songs',
+//   component: SongsPage,
+//   loader: async ({ context: { queryClient } }) => {
+//     // Ensure song data is loaded before rendering the component
+//     return queryClient.ensureQueryData({
+//       queryKey: ['songs'],
+//       queryFn: fetchSongs,
+//       staleTime: 5 * 60 * 1000, // 5 minutes
+//     });
+//   },
+//   errorComponent: () => (
+//     <div class="p-4 text-red-500">
+//       An error occurred while loading the Songs page. 
+//       Please check the console for more details.
+//     </div>
+//   )
+// })
 
 // Add more admin routes as needed
 
+const ttsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/tts',
+  component: TTSPage,
+  errorComponent: () => (
+    <div class="p-4 text-red-500">
+      An error occurred while loading the TTS page. 
+      Please check the console for more details.
+    </div>
+  )
+})
+
 const routeTree = rootRoute.addChildren([
   indexRoute, 
-  adminAlbumsRoute,
-  adminSongsRoute,
+  // adminAlbumsRoute,
+  // adminSongsRoute,
+  ttsRoute,
 ])
 
 // Create a new QueryClient instance
@@ -198,9 +213,11 @@ const router = createRouter({
 
 function MainApp() {
   return (
-    // Wrap RouterProvider with QueryClientProvider
+    // Wrap RouterProvider with QueryClientProvider and ApiProvider
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <ApiProvider>
+        <RouterProvider router={router} />
+      </ApiProvider>
     </QueryClientProvider>
   )
 }

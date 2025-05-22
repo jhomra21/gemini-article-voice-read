@@ -14,8 +14,6 @@ wrangler*
 
 .wrangler
 
-ui.config.json
-
 .cta.json
 
 .dev.vars

@@ -12,8 +12,8 @@ import {
   SidebarMenuItem,
   useSidebar
 } from './ui/sidebar';
-import { useQueryClient } from '@tanstack/solid-query';
-import { fetchAlbums, fetchSongs } from '../lib/apiService';
+// import { useQueryClient } from '@tanstack/solid-query';
+// import { fetchAlbums, fetchSongs } from '../lib/apiService';
 // Tooltip components are not directly used by AppSidebar itself, but by its parent in main.tsx
 // However, SidebarMenuButton can accept a tooltip prop, which is used here.
 // So, if SidebarMenuButton itself internally uses Tooltip, these might not be needed here directly,
@@ -24,17 +24,18 @@ import { fetchAlbums, fetchSongs } from '../lib/apiService';
 
 export const navRoutes: { path: string; name: string; iconName: IconName }[] = [
   { path: '/', name: 'Home', iconName: 'house' },
+  { path: '/tts', name: 'Text & Article TTS', iconName: 'speaker' },
 ];
 
-export const adminRoutes: { path: string; name: string; iconName: IconName }[] = [
-  { path: '/albums', name: 'Albums', iconName: 'music' },
-  { path: '/songs', name: 'Songs', iconName: 'musicNote' },
-];
+// export const adminRoutes: { path: string; name: string; iconName: IconName }[] = [
+//   { path: '/albums', name: 'Albums', iconName: 'music' },
+//   { path: '/songs', name: 'Songs', iconName: 'musicNote' },
+// ];
 
 export function AppSidebar() {
   const { setOpenMobile, isMobile, state } = useSidebar();
   const location = useLocation();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   
   const currentPath = createMemo(() => location().pathname);
 
@@ -44,20 +45,20 @@ export function AppSidebar() {
     }
   };
 
-  const prefetchData = (path: string) => {
-    // Prefetch data based on the route being hovered
-    if (path === '/albums') {
-      queryClient.prefetchQuery({
-        queryKey: ['albums'],
-        queryFn: fetchAlbums,
-      });
-    } else if (path === '/songs') {
-      queryClient.prefetchQuery({
-        queryKey: ['songs'],
-        queryFn: fetchSongs,
-      });
-    }
-  };
+  // const prefetchData = (path: string) => {
+  //   // Prefetch data based on the route being hovered
+  //   if (path === '/albums') {
+  //     queryClient.prefetchQuery({
+  //       queryKey: ['albums'],
+  //       queryFn: fetchAlbums,
+  //     });
+  //   } else if (path === '/songs') {
+  //     queryClient.prefetchQuery({
+  //       queryKey: ['songs'],
+  //       queryFn: fetchSongs,
+  //     });
+  //   }
+  // };
 
   const renderNavItem = (route: { path: string; name: string; iconName: IconName }) => {
     const isActive = createMemo(() => currentPath() === route.path);
@@ -94,7 +95,7 @@ export function AppSidebar() {
           preload="intent"
           class="w-full text-left"
           onClick={handleLinkClick}
-          onMouseEnter={() => prefetchData(route.path)}
+          // onMouseEnter={() => prefetchData(route.path)}
           tooltip={route.name}
           isActive={isActive()}
         >
@@ -118,7 +119,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         
-        <SidebarGroup>
+        {/* <SidebarGroup>
           <SidebarGroupLabel>Admin</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -127,7 +128,7 @@ export function AppSidebar() {
               </For>
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup> */}
       </SidebarContent>
     </Sidebar>
   );
